@@ -1,23 +1,39 @@
-export ZOPEN_TARBALL_URL="https://www.libssh2.org/download/libssh2-1.10.0.tar.gz"
+VERSION="1.10.0"
+export ZOPEN_TARBALL_URL="https://www.libssh2.org/download/libssh2-$VERSION.tar.gz"
 export ZOPEN_TARBALL_DEPS="make openssl zlib zoslib sed"
 export ZOPEN_TYPE="TARBALL"
 
 zopen_check_results()
 {
-  dir="$1"
-  pfx="$2"
-  chk="$1/$2_check.log"
+chk="$1/$2_check.log"
 
-  # Echo the following information to gauge build health
-  echo "actualFailures:0"
-  echo "totalTests:1"
-  echo "expectedFailures:0"
-  echo "expectedTotalTests:1"
+ERROR=$(egrep '^# ERROR:' ${chk} | tail -1 | awk '{ print $3; }')
+SKIP=$(egrep '^# SKIP:' ${chk} | tail -1 | awk '{ print $3; }')
+PASS=$(egrep '^# PASS:' ${chk} | tail -1 | awk '{ print $3; }')
+FAIL=$(egrep '^# FAIL:' ${chk} | tail -1 | awk '{ print $3; }')
+XFAIL=$(egrep '^# XFAIL:' ${chk} | tail -1 | awk '{ print $3; }')
+TOTAL=$(egrep '^# TOTAL:' ${chk} | tail -1 | awk '{ print $3; }')
+
+totalTests=$(echo "${TOTAL}-${SKIP}" | bc )
+actualFailures=$(echo "${FAIL}+${XFAIL}+${ERROR}" | bc)
+
+cat <<ZZ
+actualFailures:$actualFailures
+totalTests:$totalTests
+expectedFailures:0
+ZZ
 }
 
 zopen_append_to_env()
 {
-  # echo envars outside of PATH, MANPATH, LIBPATH
+cat <<ZZ
+if [ ! -z "\$ZOPEN_IN_ZOPEN_BUILD" ]; then
+  export ZOPEN_EXTRA_CFLAGS="\${ZOPEN_EXTRA_CFLAGS} -I\$PWD/include"
+  export ZOPEN_EXTRA_CXXFLAGS="\${ZOPEN_EXTRA_CXXFLAGS} -I\$PWD/include"
+  export ZOPEN_EXTRA_LDFLAGS="\${ZOPEN_EXTRA_LDFLAGS} -L\$PWD/lib"
+  export ZOPEN_EXTRA_LIBS="\${ZOPEN_EXTRA_LIBS} -lssh2"
+fi
+ZZ
 }
 
 zopen_append_to_setup()
@@ -27,7 +43,5 @@ zopen_append_to_setup()
 
 zopen_get_version()
 {
-  # Modify to echo the version of your tool/library
-  # Rather than hardcoding the version, obtain the version by running the tool/library
-  echo "1.0.0"
+  echo "$VERSION"
 }
