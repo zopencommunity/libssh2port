@@ -1,7 +1,9 @@
-VERSION="1.10.0"
-export ZOPEN_TARBALL_URL="https://www.libssh2.org/download/libssh2-$VERSION.tar.gz"
-export ZOPEN_TARBALL_DEPS="make openssl zlib zoslib sed"
-export ZOPEN_TYPE="TARBALL"
+# bump: libssh2-version /LIBSSH2_VERSION="(.*)"/ https://www.libssh2.org/download/|re:/libssh2-([\d.]+).tar.gz/$1/|semver:*
+LIBSSH2_VERSION="1.10.0"
+
+export ZOPEN_BUILD_LINE="STABLE"
+export ZOPEN_STABLE_URL="https://www.libssh2.org/download/libssh2-$LIBSSH2_VERSION.tar.gz"
+export ZOPEN_STABLE_DEPS="make openssl zlib zoslib sed"
 
 zopen_check_results()
 {
@@ -43,5 +45,5 @@ zopen_append_to_setup()
 
 zopen_get_version()
 {
-  echo "$VERSION"
+  echo "$LIBSSH2_VERSION"
 }
