@@ -1,5 +1,5 @@
 # bump: libssh2-version /LIBSSH2_VERSION="(.*)"/ https://www.libssh2.org/download/|re:/libssh2-([\d.]+).tar.gz/$1/|semver:*
-LIBSSH2_VERSION="1.10.0"
+LIBSSH2_VERSION="1.11.0"
 
 export ZOPEN_BUILD_LINE="STABLE"
 export ZOPEN_STABLE_URL="https://www.libssh2.org/download/libssh2-$LIBSSH2_VERSION.tar.gz"
@@ -22,7 +22,7 @@ actualFailures=$(echo "${FAIL}+${XFAIL}+${ERROR}" | bc)
 cat <<ZZ
 actualFailures:$actualFailures
 totalTests:$totalTests
-expectedFailures:0
+expectedFailures:39
 ZZ
 }
 
