@@ -2,6 +2,7 @@
 LIBSSH2_VERSION="1.11.0"
 
 export ZOPEN_BUILD_LINE="STABLE"
+export ZOPEN_CATEGORIES="networking security library"
 export ZOPEN_STABLE_URL="https://www.libssh2.org/download/libssh2-$LIBSSH2_VERSION.tar.gz"
 export ZOPEN_STABLE_DEPS="make openssl zlib zoslib sed"
 
