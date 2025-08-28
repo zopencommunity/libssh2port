@@ -1,23 +1,15 @@
 diff --git a/src/libssh2_setup.h b/src/libssh2_setup.h
-index 87fed1c..94fc16b 100644
+index 0f17a18..165ad28 100644
 --- a/src/libssh2_setup.h
 +++ b/src/libssh2_setup.h
-@@ -10,6 +10,10 @@
- #define WIN32
+@@ -14,6 +14,10 @@
+ #include <_mingw.h>
  #endif
  
 +#ifdef __MVS__
 +#include <sys/time.h>
 +#endif
 +
- /* Define mingw-w64 version macros, eg __MINGW{32,64}_{MINOR,MAJOR}_VERSION */
- #ifdef __MINGW32__
- #include <_mingw.h>
-@@ -62,7 +66,6 @@
- #ifndef NONLS
- #define NONLS
- #endif
--
- #ifdef __MINGW32__
- # ifdef __MINGW64_VERSION_MAJOR
- /* Number of bits in a file offset, on hosts where this is settable. */
+ /* Configuration provided by build tools (autotools and CMake),
+    and via platform-specific directories for os400 and vms */
+ #if defined(HAVE_CONFIG_H) || defined(__OS400__) || defined(__VMS)
